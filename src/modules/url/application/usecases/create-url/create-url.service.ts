@@ -8,8 +8,8 @@ import { CreateUrlInputDto, CreateUrlOutputDto } from './dto/create-url.dto';
 @Injectable()
 export class CreateUrlUseCase {
   constructor(
-    private configService: ConfigService,
-    @Inject(TOKENS.UrlDao) private urlDao: UrlDao
+    private readonly configService: ConfigService,
+    @Inject(TOKENS.UrlDao) private readonly urlDao: UrlDao
   ) {}
 
   public async execute(data: CreateUrlInputDto): Promise<CreateUrlOutputDto> {

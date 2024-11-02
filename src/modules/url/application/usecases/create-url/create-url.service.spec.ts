@@ -3,10 +3,11 @@ import { createMock } from '@golevelup/ts-jest';
 import { ConfigService } from '@nestjs/config';
 import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 import { TOKENS } from 'src/shared/ioc/tokens';
+import { UrlDaoDto } from '../../persistence/dao/url-dao.dto';
 import { UrlDao } from '../../persistence/dao/url-dao.interface';
 import { CreateUrlUseCase } from './create-url.service';
 
-describe('CreateUrlService', () => {
+describe('CreateUrlUseCase', () => {
   let sut: CreateUrlUseCase;
   let mockConfigService: jest.Mocked<ConfigService>;
   let mockUrlDao: jest.Mocked<UrlDao>;
@@ -25,7 +26,7 @@ describe('CreateUrlService', () => {
 
   it('should generate a new url if the first one already exists', async() => {
     // Arrange
-    const url = createMock<Url>();
+    const url = createMock<UrlDaoDto>();
     const originalUrl = 'https://teddydigital.io';
     const baseUrl = 'https://short.url';
     mockConfigService.get.mockReturnValue(baseUrl);
