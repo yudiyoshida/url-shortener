@@ -12,6 +12,12 @@ export class UrlPrismaAdapterDao implements UrlDao {
     return this.prisma.url.findMany();
   }
 
+  public async findById(id: string): Promise<UrlDaoDto | null> {
+    return this.prisma.url.findUnique({
+      where: { id },
+    });
+  }
+
   public async findByUrl(url: string): Promise<UrlDaoDto | null> {
     return this.prisma.url.findUnique({
       where: { shortUrl: url },
@@ -25,6 +31,13 @@ export class UrlPrismaAdapterDao implements UrlDao {
         shortUrl: url.shortUrl,
         clicks: 0,
       },
+    });
+  }
+
+  public async update(id: string, newOriginalUrl: string): Promise<void> {
+    await this.prisma.url.update({
+      where: { id },
+      data: { originalUrl: newOriginalUrl },
     });
   }
 }

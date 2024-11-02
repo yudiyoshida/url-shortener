@@ -13,6 +13,10 @@ export class UrlInMemoryAdapterDao implements UrlDao {
     return this._urls;
   }
 
+  public async findById(id: string): Promise<UrlDaoDto | null> {
+    return this._urls.find((u) => u.id === id) ?? null;
+  }
+
   public async findByUrl(url: string): Promise<UrlDaoDto | null> {
     return this._urls.find((u) => u.shortUrl === url) ?? null;
   }
@@ -26,5 +30,15 @@ export class UrlInMemoryAdapterDao implements UrlDao {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+  }
+
+  public async update(id: string, newOriginalUrl: string): Promise<void> {
+    const urlIndex = this._urls.findIndex((u) => u.id === id);
+    if (urlIndex === -1) {
+      return;
+    }
+
+    this._urls[urlIndex].originalUrl = newOriginalUrl;
+    this._urls[urlIndex].updatedAt = new Date();
   }
 }

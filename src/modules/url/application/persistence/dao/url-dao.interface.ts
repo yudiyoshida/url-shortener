@@ -3,6 +3,8 @@ import { UrlDaoDto } from './url-dao.dto';
 
 export interface UrlDao {
   findAll(): Promise<UrlDaoDto[]>;
+  findById(id: string): Promise<UrlDaoDto | null>;
   findByUrl(url: string): Promise<UrlDaoDto | null>;
   save(url: Url): Promise<void>;
+  update(id: string, newOriginalUrl: string): Promise<void>;
 }
