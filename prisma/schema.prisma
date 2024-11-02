@@ -14,11 +14,24 @@ datasource db {
 }
 
 model Url {
-  id          String   @id @default(uuid())
-  originalUrl String
-  shortUrl    String   @unique
-  clicks      Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+  id          String    @id @default(uuid())
+  originalUrl String    @map("original_url") @db.Text
+  shortUrl    String    @unique @map("short_url")
+  clicks      Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  accountId   String?   @map("account_id")
+  account     Account?  @relation(fields: [accountId], references: [id])
+}
+
+model Account {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String    @db.Text
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  urls      Url[]
 }
