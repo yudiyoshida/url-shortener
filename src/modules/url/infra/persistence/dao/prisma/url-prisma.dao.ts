@@ -1,8 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { UrlDaoDto } from 'src/modules/url/application/persistence/dao/url-dao.dto';
 import { UrlDao } from 'src/modules/url/application/persistence/dao/url-dao.interface';
 import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 import { PrismaService } from 'src/shared/infra/database/prisma.service';
+
+const urlSelect = {
+  id: true,
+  originalUrl: true,
+  shortUrl: true,
+  clicks: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: false,
+} satisfies Prisma.UrlSelect;
 
 @Injectable()
 export class UrlPrismaAdapterDao implements UrlDao {
@@ -11,18 +22,21 @@ export class UrlPrismaAdapterDao implements UrlDao {
   public async findAll(): Promise<UrlDaoDto[]> {
     return this.prisma.url.findMany({
       where: { deletedAt: null },
+      select: urlSelect,
     });
   }
 
   public async findById(id: string): Promise<UrlDaoDto | null> {
     return this.prisma.url.findUnique({
       where: { id, deletedAt: null },
+      select: urlSelect,
     });
   }
 
   public async findByUrl(url: string): Promise<UrlDaoDto | null> {
     return this.prisma.url.findUnique({
       where: { shortUrl: url, deletedAt: null },
+      select: urlSelect,
     });
   }
 

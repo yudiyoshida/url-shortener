@@ -47,6 +47,21 @@ describe('UrlController', () => {
     });
   });
 
+  describe('GET /urls', () => {
+    it('should not return deletedAt information', async() => {
+      // Arrange
+      const originalUrl = 'https://teddydigital.io';
+      await controller.createUrl({ originalUrl });
+
+      // Act
+      const getAllOutput = await controller.getAllUrls();
+
+      // Assert
+      expect(getAllOutput.length).toBe(1);
+      expect(getAllOutput[0]).not.toHaveProperty('deletedAt');
+    });
+  });
+
   describe('PATCH /urls/{id}', () => {
     it('should update the url', async() => {
       // Arrange
