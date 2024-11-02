@@ -36,7 +36,7 @@ describe('UrlController', () => {
       const createOutput = await controller.createUrl({ originalUrl });
 
       // Assert
-      const getAllOutput = await controller.getAllUrls();
+      const getAllOutput = await controller.getAllUrls({});
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', originalUrl);
@@ -54,7 +54,7 @@ describe('UrlController', () => {
       await controller.createUrl({ originalUrl });
 
       // Act
-      const getAllOutput = await controller.getAllUrls();
+      const getAllOutput = await controller.getAllUrls({});
 
       // Assert
       expect(getAllOutput.data.length).toBe(1);
@@ -76,7 +76,7 @@ describe('UrlController', () => {
       // Assert
       expect(updateOutput).toEqual({ message: 'Url atualizada com sucesso.' });
 
-      const getAllOutput = await controller.getAllUrls();
+      const getAllOutput = await controller.getAllUrls({});
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', newUrl);
@@ -89,7 +89,7 @@ describe('UrlController', () => {
       // Arrange
       const originalUrl = 'https://teddydigital.io';
       const createOutput = await controller.createUrl({ originalUrl });
-      expect((await controller.getAllUrls()).data.length).toBe(1);
+      expect((await controller.getAllUrls({})).data.length).toBe(1);
 
       // Act
       const deleteOutput = await controller.deleteUrl({ id: createOutput.id });
@@ -97,7 +97,7 @@ describe('UrlController', () => {
       // Assert
       expect(deleteOutput).toEqual({ message: 'Url deletada com sucesso.' });
 
-      const getAllOutput = await controller.getAllUrls();
+      const getAllOutput = await controller.getAllUrls({});
       expect(getAllOutput.data.length).toBe(0);
     });
   });

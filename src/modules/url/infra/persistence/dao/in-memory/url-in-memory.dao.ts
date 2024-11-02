@@ -9,7 +9,8 @@ import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 export class UrlInMemoryAdapterDao implements UrlDao {
   private _urls: UrlDaoDto[] = [];
 
-  public async findAll(): Promise<[UrlDaoDto[], number]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async findAll(page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
     return [this._urls, this._urls.length];
   }
 

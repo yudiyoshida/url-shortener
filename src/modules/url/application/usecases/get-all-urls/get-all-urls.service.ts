@@ -10,8 +10,8 @@ export class GetAllUrlsUseCase {
     @Inject(TOKENS.UrlDao) private readonly urlDao: UrlDao
   ) {}
 
-  public async execute(): Promise<IPagination<UrlDaoDto>> {
-    const urls = await this.urlDao.findAll();
+  public async execute(page?: number, size?: number): Promise<IPagination<UrlDaoDto>> {
+    const urls = await this.urlDao.findAll(page, size);
 
     return new Pagination(urls).getDto();
   }
