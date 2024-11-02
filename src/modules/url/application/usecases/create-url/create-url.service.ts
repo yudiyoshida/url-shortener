@@ -15,19 +15,19 @@ export class CreateUrlUseCase {
   public async execute(data: CreateUrlInputDto): Promise<CreateUrlOutputDto> {
     const baseUrl = this.configService.get('APP_URL');
 
-    let url = new Url(data.originalUrl, baseUrl);
+    let url = new Url(data.originalUrl);
 
     do {
       const existingUrl = await this.urlDao.findByUrl(url.shortUrl);
       if (!existingUrl) {
         break;
       }
-      url = new Url(data.originalUrl, baseUrl);
+      url = new Url(data.originalUrl);
 
     } while (true);
 
     const id = await this.urlDao.save(url);
 
-    return { id, shortUrl: url.shortUrl };
+    return { id, shortUrl: `${baseUrl}/${url.shortUrl}` };
   }
 }

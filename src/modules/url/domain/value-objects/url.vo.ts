@@ -7,15 +7,13 @@ export class Url {
   private _originalUrl: string;
   private _shortUrl: string;
 
-  constructor(originalUrl: string, domain: string) {
+  constructor(originalUrl: string) {
     this._originalUrl = originalUrl;
-    this._shortUrl = this.generateShortUrl(domain);
+    this._shortUrl = this.generateShortUrl();
   }
 
-  private generateShortUrl(domain: string): string {
-    const randomString = Math.random().toString(36).substring(2, 8);
-
-    return `${domain}/${randomString}`;
+  private generateShortUrl(): string {
+    return Math.random().toString(36).substring(2, 8);
   }
 
   get originalUrl(): string {
