@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
 import { UrlModule } from '../../url.module';
 import { UrlController } from './url.controller';
 
 describe('UrlController', () => {
   let controller: UrlController;
+  let database: PrismaService;
 
   beforeEach(async() => {
     const module: TestingModule = await Test.createTestingModule({
@@ -11,6 +13,9 @@ describe('UrlController', () => {
     }).compile();
 
     controller = module.get<UrlController>(UrlController);
+    database = module.get<PrismaService>(PrismaService);
+
+    await database.url.deleteMany({});
   });
 
   it('should be defined', () => {

@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Url {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   originalUrl String
   shortUrl    String   @unique
   clicks      Int      @default(0)
