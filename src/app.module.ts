@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AppConfigModule } from './core/app-config.module';
 import { AccountModule } from './modules/account/account.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { HealthCheckModule } from './modules/health-check/health-check.module';
 import { UrlModule } from './modules/url/url.module';
 
 @Module({
@@ -12,8 +11,7 @@ import { UrlModule } from './modules/url/url.module';
     AccountModule,
     AuthenticationModule,
     UrlModule,
+    HealthCheckModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
