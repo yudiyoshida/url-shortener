@@ -1,9 +1,11 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class IPagination<T> {
-  currentPage: number;
-  itemsPerPage: number;
-  totalItems: number;
-  totalPages: number;
-  data: T[];
+  @ApiProperty() currentPage: number;
+  @ApiProperty() itemsPerPage: number;
+  @ApiProperty() totalItems: number;
+  @ApiProperty() totalPages: number;
+  @ApiProperty() data: T[];
 };
 
 export class Pagination<T> {

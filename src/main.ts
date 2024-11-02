@@ -1,11 +1,19 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const appConfig = app.get(ConfigService);
+
+  const config = new DocumentBuilder()
+    .setTitle('URL Shorneter REST API')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config, { autoTagControllers: false });
+  SwaggerModule.setup('swagger', app, document);
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
