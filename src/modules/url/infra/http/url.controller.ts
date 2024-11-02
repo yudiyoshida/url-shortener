@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ParamsDto } from 'src/shared/dto/params.dto';
 import { SuccessMessage } from 'src/shared/dto/success-message.dto';
+import { IPagination } from 'src/shared/value-objects/pagination/pagination';
 import { UrlDaoDto } from '../../application/persistence/dao/url-dao.dto';
 import { CreateUrlUseCase } from '../../application/usecases/create-url/create-url.service';
 import { CreateUrlInputDto, CreateUrlOutputDto } from '../../application/usecases/create-url/dto/create-url.dto';
@@ -24,7 +25,7 @@ export class UrlController {
   }
 
   @Get()
-  public async getAllUrls(): Promise<UrlDaoDto[]> {
+  public async getAllUrls(): Promise<IPagination<UrlDaoDto>> {
     return this.getAllUrlsUseCase.execute();
   }
 

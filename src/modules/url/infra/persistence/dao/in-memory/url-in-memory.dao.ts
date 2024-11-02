@@ -9,8 +9,8 @@ import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 export class UrlInMemoryAdapterDao implements UrlDao {
   private _urls: UrlDaoDto[] = [];
 
-  public async findAll(): Promise<UrlDaoDto[]> {
-    return this._urls;
+  public async findAll(): Promise<[UrlDaoDto[], number]> {
+    return [this._urls, this._urls.length];
   }
 
   public async findById(id: string): Promise<UrlDaoDto | null> {
