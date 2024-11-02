@@ -9,7 +9,7 @@ async function bootstrap() {
   const appConfig = app.get(ConfigService);
 
   const config = new DocumentBuilder()
-    .setTitle('URL Shorneter REST API')
+    .setTitle('URL Shortener REST API')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config, { autoTagControllers: false });

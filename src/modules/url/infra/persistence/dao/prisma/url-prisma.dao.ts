@@ -17,7 +17,7 @@ const urlSelect = {
 
 @Injectable()
 export class UrlPrismaAdapterDao implements UrlDao {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   public async findAll(page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
     const where: Prisma.UrlWhereInput = { deletedAt: null };

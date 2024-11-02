@@ -8,7 +8,7 @@ import { RegisterInputDto, RegisterOutputDto } from './dtos/register.dto';
 @Injectable()
 export class RegisterUseCase {
   constructor(
-    @Inject(TOKENS.AccountDao) private accountDao: AccountDao,
+    @Inject(TOKENS.AccountDao) private readonly accountDao: AccountDao,
   ) {}
 
   public async execute(data: RegisterInputDto): Promise<RegisterOutputDto> {
@@ -18,7 +18,6 @@ export class RegisterUseCase {
     }
 
     const password = new Password(data.password);
-
     const accountId = await this.accountDao.save(data.name, data.email, password.value);
 
     return { id: accountId };

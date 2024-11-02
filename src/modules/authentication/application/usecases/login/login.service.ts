@@ -8,8 +8,8 @@ import { LoginInputDto, LoginOutputDto } from './dtos/login.dto';
 @Injectable()
 export class LoginUseCase {
   constructor(
-    private jwtService: JwtService,
-    private findAccountByEmail: FindAccountByEmailUseCase,
+    private readonly jwtService: JwtService,
+    private readonly findAccountByEmail: FindAccountByEmailUseCase,
   ) {}
 
   public async execute(data: LoginInputDto): Promise<LoginOutputDto> {

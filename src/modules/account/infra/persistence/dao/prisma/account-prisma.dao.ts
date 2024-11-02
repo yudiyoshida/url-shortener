@@ -5,7 +5,7 @@ import { PrismaService } from 'src/shared/infra/database/prisma.service';
 
 @Injectable()
 export class AccountPrismaAdapterDao implements AccountDao {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   public async findByEmail(email: string): Promise<AccountDaoDto | null> {
     return this.prisma.account.findUnique({

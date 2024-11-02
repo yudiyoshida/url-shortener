@@ -6,10 +6,10 @@ import { AccountDao } from '../../persistence/dao/account-dao.interface';
 @Injectable()
 export class FindAccountByEmailUseCase {
   constructor(
-    @Inject(TOKENS.AccountDao) private accountDao: AccountDao,
+    @Inject(TOKENS.AccountDao) private readonly accountDao: AccountDao,
   ) {}
 
-  public async execute(email: string): Promise<AccountDaoDto|null> {
+  public async execute(email: string): Promise<AccountDaoDto | null> {
     return this.accountDao.findByEmail(email);
   }
 }
