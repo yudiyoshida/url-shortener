@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
       validationSchema: Joi.object({
         PORT: Joi.number().positive().integer().required(),
         DATABASE_URL: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
   ],
