@@ -1,6 +1,7 @@
 import { TestBed } from '@automock/jest';
 import { createMock } from '@golevelup/ts-jest';
 import { NotFoundException } from '@nestjs/common';
+import { Errors } from 'src/shared/errors/messages';
 import { TOKENS } from 'src/shared/ioc/tokens';
 import { UrlDaoDto } from '../../persistence/dao/url-dao.dto';
 import { UrlDao } from '../../persistence/dao/url-dao.interface';
@@ -23,15 +24,15 @@ describe('UpdateUrlUseCase', () => {
 
   it('should throw an error if url is not found', async() => {
     // Arrange
-    const url = 'https://teddydigital.io';
+    const id = 'url-id';
     const newUrl = 'https://google.com';
     mockUrlDao.findById.mockResolvedValue(null);
 
     // Act & Assert
     expect.assertions(2);
-    return sut.execute(url, { newUrl }).catch(err => {
+    return sut.execute(id, { newUrl }).catch(err => {
       expect(err).toBeInstanceOf(NotFoundException);
-      expect(err.message).toBe('Url não encontrada na base de dados.');
+      expect(err.message).toBe(Errors.URL_NOT_FOUND);
     });
   });
 
