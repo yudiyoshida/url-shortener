@@ -34,14 +34,13 @@ describe('UrlController', () => {
 
       // Act
       const createOutput = await controller.createUrl({ originalUrl });
-      const shortUrl = createOutput.shortUrl.split('/').pop();
 
       // Assert
       const getAllOutput = await controller.getAllUrls({});
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', originalUrl);
-      expect(getAllOutput.data[0]).toHaveProperty('shortUrl', shortUrl);
+      expect(getAllOutput.data[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
       expect(getAllOutput.data[0]).toHaveProperty('clicks', 0);
       expect(getAllOutput.data[0]).toHaveProperty('createdAt', expect.any(Date));
       expect(getAllOutput.data[0]).toHaveProperty('updatedAt', expect.any(Date));
@@ -68,7 +67,6 @@ describe('UrlController', () => {
       // Arrange
       const originalUrl = 'https://teddydigital.io';
       const createOutput = await controller.createUrl({ originalUrl });
-      const shortUrl = createOutput.shortUrl.split('/').pop();
 
       const newUrl = 'https://teddydigital.com';
 
@@ -82,7 +80,7 @@ describe('UrlController', () => {
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', newUrl);
-      expect(getAllOutput.data[0]).toHaveProperty('shortUrl', shortUrl);
+      expect(getAllOutput.data[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
     });
   });
 
