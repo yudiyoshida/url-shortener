@@ -33,6 +33,7 @@ describe('UrlController', () => {
       expect(getAllOutput[0]).toHaveProperty('id', expect.any(String));
       expect(getAllOutput[0]).toHaveProperty('originalUrl', originalUrl);
       expect(getAllOutput[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
+      expect(getAllOutput[0]).toHaveProperty('clicks', 0);
       expect(getAllOutput[0]).toHaveProperty('createdAt', expect.any(Date));
       expect(getAllOutput[0]).toHaveProperty('updatedAt', expect.any(Date));
     });

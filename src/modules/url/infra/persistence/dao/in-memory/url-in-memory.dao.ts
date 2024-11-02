@@ -22,6 +22,7 @@ export class UrlInMemoryAdapterDao implements UrlDao {
       id: crypto.randomUUID(),
       originalUrl: url.originalUrl,
       shortUrl: url.shortUrl,
+      clicks: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
