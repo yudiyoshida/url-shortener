@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         PORT: Joi.number().positive().integer().required(),
+        DATABASE_URL: Joi.string().required(),
       }),
     }),
   ],
