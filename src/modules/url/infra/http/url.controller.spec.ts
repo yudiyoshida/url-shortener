@@ -18,6 +18,11 @@ describe('UrlController', () => {
     await database.url.deleteMany({});
   });
 
+  afterAll(async() => {
+    await database.url.deleteMany({});
+    await database.$disconnect();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
@@ -61,6 +66,24 @@ describe('UrlController', () => {
       expect(getAllOutput[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput[0]).toHaveProperty('originalUrl', newUrl);
       expect(getAllOutput[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
+    });
+  });
+
+  describe('DELETE /urls/{id}', () => {
+    it('should delete the url', async() => {
+      // Arrange
+      const originalUrl = 'https://teddydigital.io';
+      const createOutput = await controller.createUrl({ originalUrl });
+      expect((await controller.getAllUrls()).length).toBe(1);
+
+      // Act
+      const deleteOutput = await controller.deleteUrl({ id: createOutput.id });
+
+      // Assert
+      expect(deleteOutput).toEqual({ message: 'Url deletada com sucesso.' });
+
+      const getAllOutput = await controller.getAllUrls();
+      expect(getAllOutput.length).toBe(0);
     });
   });
 });

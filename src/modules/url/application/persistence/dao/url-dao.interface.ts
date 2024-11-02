@@ -7,4 +7,5 @@ export interface UrlDao {
   findByUrl(url: string): Promise<UrlDaoDto | null>;
   save(url: Url): Promise<string>;
   update(id: string, newOriginalUrl: string): Promise<void>;
+  delete(id: string): Promise<void>;
 }

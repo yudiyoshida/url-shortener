@@ -45,4 +45,8 @@ export class UrlInMemoryAdapterDao implements UrlDao {
     this._urls[urlIndex].originalUrl = newOriginalUrl;
     this._urls[urlIndex].updatedAt = new Date();
   }
+
+  public async delete(id: string): Promise<void> {
+    this._urls = this._urls.filter((u) => u.id !== id);
+  }
 }
