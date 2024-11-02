@@ -7,5 +7,6 @@ export class CreateUrlInputDto {
 }
 
 export class CreateUrlOutputDto {
+  id: string;
   shortUrl: string;
 }

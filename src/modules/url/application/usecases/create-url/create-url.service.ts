@@ -26,8 +26,8 @@ export class CreateUrlUseCase {
 
     } while (true);
 
-    await this.urlDao.save(url);
+    const id = await this.urlDao.save(url);
 
-    return { shortUrl: url.shortUrl };
+    return { id, shortUrl: url.shortUrl };
   }
 }

@@ -21,15 +21,19 @@ export class UrlInMemoryAdapterDao implements UrlDao {
     return this._urls.find((u) => u.shortUrl === url) ?? null;
   }
 
-  public async save(url: Url): Promise<void> {
+  public async save(url: Url): Promise<string> {
+    const id = crypto.randomUUID();
+
     this._urls.push({
-      id: crypto.randomUUID(),
+      id,
       originalUrl: url.originalUrl,
       shortUrl: url.shortUrl,
       clicks: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    return id;
   }
 
   public async update(id: string, newOriginalUrl: string): Promise<void> {

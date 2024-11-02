@@ -24,14 +24,16 @@ export class UrlPrismaAdapterDao implements UrlDao {
     });
   }
 
-  public async save(url: Url): Promise<void> {
-    await this.prisma.url.create({
+  public async save(url: Url): Promise<string> {
+    const newUrl = await this.prisma.url.create({
       data: {
         originalUrl: url.originalUrl,
         shortUrl: url.shortUrl,
         clicks: 0,
       },
     });
+
+    return newUrl.id;
   }
 
   public async update(id: string, newOriginalUrl: string): Promise<void> {

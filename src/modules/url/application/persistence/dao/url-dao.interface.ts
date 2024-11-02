@@ -5,6 +5,6 @@ export interface UrlDao {
   findAll(): Promise<UrlDaoDto[]>;
   findById(id: string): Promise<UrlDaoDto | null>;
   findByUrl(url: string): Promise<UrlDaoDto | null>;
-  save(url: Url): Promise<void>;
+  save(url: Url): Promise<string>;
   update(id: string, newOriginalUrl: string): Promise<void>;
 }

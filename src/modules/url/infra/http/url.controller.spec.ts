@@ -31,16 +31,36 @@ describe('UrlController', () => {
       const createOutput = await controller.createUrl({ originalUrl });
 
       // Assert
-      expect(createOutput).toEqual({ shortUrl: expect.any(String) });
-
       const getAllOutput = await controller.getAllUrls();
       expect(getAllOutput.length).toBe(1);
-      expect(getAllOutput[0]).toHaveProperty('id', expect.any(String));
+      expect(getAllOutput[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput[0]).toHaveProperty('originalUrl', originalUrl);
       expect(getAllOutput[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
       expect(getAllOutput[0]).toHaveProperty('clicks', 0);
       expect(getAllOutput[0]).toHaveProperty('createdAt', expect.any(Date));
       expect(getAllOutput[0]).toHaveProperty('updatedAt', expect.any(Date));
+    });
+  });
+
+  describe('PATCH /urls/{id}', () => {
+    it('should update the url', async() => {
+      // Arrange
+      const originalUrl = 'https://teddydigital.io';
+      const createOutput = await controller.createUrl({ originalUrl });
+
+      const newUrl = 'https://teddydigital.com';
+
+      // Act
+      const updateOutput = await controller.updateUrl({ id: createOutput.id }, { newUrl });
+
+      // Assert
+      expect(updateOutput).toEqual({ message: 'Url atualizada com sucesso.' });
+
+      const getAllOutput = await controller.getAllUrls();
+      expect(getAllOutput.length).toBe(1);
+      expect(getAllOutput[0]).toHaveProperty('id', createOutput.id);
+      expect(getAllOutput[0]).toHaveProperty('originalUrl', newUrl);
+      expect(getAllOutput[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
     });
   });
 });

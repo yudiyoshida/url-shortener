@@ -56,14 +56,17 @@ describe('CreateUrlUseCase', () => {
 
   it('should return a short url', async() => {
     // Arrange
+    const id = 'url-id';
     const originalUrl = 'https://teddydigital.io';
     const baseUrl = 'https://short.url';
     mockConfigService.get.mockReturnValue(baseUrl);
+    mockUrlDao.save.mockResolvedValue(id);
 
     // Act
     const result = await sut.execute({ originalUrl });
 
     // Assert
-    expect(result).toEqual({ shortUrl: expect.any(String) });
+    expect(result).toHaveProperty('id', id);
+    expect(result).toHaveProperty('shortUrl', expect.any(String));
   });
 });
