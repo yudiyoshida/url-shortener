@@ -5,4 +5,5 @@ export class UrlDaoDto {
   clicks: number;
   createdAt: Date;
   updatedAt: Date;
+  accountId: string | null;
 }

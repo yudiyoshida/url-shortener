@@ -12,7 +12,7 @@ export class CreateUrlUseCase {
     @Inject(TOKENS.UrlDao) private readonly urlDao: UrlDao
   ) {}
 
-  public async execute(data: CreateUrlInputDto): Promise<CreateUrlOutputDto> {
+  public async execute(data: CreateUrlInputDto, accountId?: string): Promise<CreateUrlOutputDto> {
     const baseUrl = this.configService.get('APP_URL');
 
     let url = new Url(data.originalUrl);
@@ -26,7 +26,7 @@ export class CreateUrlUseCase {
 
     } while (true);
 
-    const id = await this.urlDao.save(url);
+    const id = await this.urlDao.save(url, accountId);
 
     return { id, shortUrl: `${baseUrl}/${url.shortUrl}` };
   }

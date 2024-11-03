@@ -10,6 +10,7 @@ const urlSelect = {
   originalUrl: true,
   shortUrl: true,
   clicks: true,
+  accountId: true,
   createdAt: true,
   updatedAt: true,
   deletedAt: false,
@@ -47,12 +48,13 @@ export class UrlPrismaAdapterDao implements UrlDao {
     });
   }
 
-  public async save(url: Url): Promise<string> {
+  public async save(url: Url, accountId?: string): Promise<string> {
     const newUrl = await this.prisma.url.create({
       data: {
         originalUrl: url.originalUrl,
         shortUrl: url.shortUrl,
         clicks: 0,
+        accountId,
       },
     });
 

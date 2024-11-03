@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as crypto from 'crypto';
 
 import { Injectable } from '@nestjs/common';
@@ -9,7 +10,6 @@ import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 export class UrlInMemoryAdapterDao implements UrlDao {
   private _urls: UrlDaoDto[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async findAll(page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
     return [this._urls, this._urls.length];
   }
@@ -22,7 +22,7 @@ export class UrlInMemoryAdapterDao implements UrlDao {
     return this._urls.find((u) => u.shortUrl === url) ?? null;
   }
 
-  public async save(url: Url): Promise<string> {
+  public async save(url: Url, accountId?: string): Promise<string> {
     const id = crypto.randomUUID();
 
     this._urls.push({
@@ -32,6 +32,7 @@ export class UrlInMemoryAdapterDao implements UrlDao {
       clicks: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
+      accountId: accountId ?? null,
     });
 
     return id;

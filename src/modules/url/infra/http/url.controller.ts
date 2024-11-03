@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Account } from 'src/modules/authentication/decorators/account.decorator';
 import { Protected } from 'src/modules/authentication/decorators/required-role.decorator';
+import { PayloadDto } from 'src/modules/authentication/dtos/payload.dto';
 import { ParamsDto } from 'src/shared/dto/params.dto';
 import { QueriesDto } from 'src/shared/dto/queries.dto';
 import { SuccessMessage } from 'src/shared/dto/success-message.dto';
@@ -23,14 +25,15 @@ export class UrlController {
   ) {}
 
   @Post()
+  @Protected('partial')
   @Swagger({
     tags: ['Url'],
     summary: 'Rota utilizada para criar uma nova URL',
     applyBadRequest: true,
     createdResponse: CreateUrlOutputDto,
   })
-  public async createUrl(@Body() body: CreateUrlInputDto): Promise<CreateUrlOutputDto> {
-    return this.createUrlUseCase.execute(body);
+  public async createUrl(@Body() body: CreateUrlInputDto, @Account() acc: PayloadDto): Promise<CreateUrlOutputDto> {
+    return this.createUrlUseCase.execute(body, acc?.sub);
   }
 
   @Get()

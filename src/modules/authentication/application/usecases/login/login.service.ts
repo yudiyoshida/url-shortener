@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { FindAccountByEmailUseCase } from 'src/modules/account/application/usecases/find-account-by-email/find-account-by-email.service';
 import { Password } from 'src/modules/account/domain/value-objects/password.vo';
+import { PayloadDto } from 'src/modules/authentication/dtos/payload.dto';
 import { Errors } from 'src/shared/errors/messages';
 import { LoginInputDto, LoginOutputDto } from './dtos/login.dto';
 
@@ -23,7 +24,8 @@ export class LoginUseCase {
       throw new BadRequestException(Errors.INVALID_CREDENTIALS);
     }
 
-    const token = this.jwtService.sign({ id: account.id });
+    const payload: PayloadDto = { sub: account.id };
+    const token = this.jwtService.sign(payload);
 
     return { token };
   }

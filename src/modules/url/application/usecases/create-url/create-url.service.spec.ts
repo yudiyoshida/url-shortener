@@ -33,15 +33,14 @@ describe('CreateUrlUseCase', () => {
     mockUrlDao.findByUrl.mockResolvedValueOnce(url).mockResolvedValue(null);
 
     // Act
-    const result = await sut.execute({ originalUrl });
+    await sut.execute({ originalUrl });
 
     // Assert
-    expect(result).toEqual({ shortUrl: expect.any(String) });
     expect(mockUrlDao.findByUrl).toHaveBeenCalledTimes(2);
     expect(mockUrlDao.save).toHaveBeenCalledTimes(1);
   });
 
-  it('should save the short url', async() => {
+  it('should save the short url (not logged)', async() => {
     // Arrange
     const originalUrl = 'https://teddydigital.io';
     const baseUrl = 'https://short.url';
@@ -51,7 +50,21 @@ describe('CreateUrlUseCase', () => {
     await sut.execute({ originalUrl });
 
     // Assert
-    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.any(Url));
+    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.any(Url), undefined);
+  });
+
+  it('should save the short url (logged)', async() => {
+    // Arrange
+    const originalUrl = 'https://teddydigital.io';
+    const baseUrl = 'https://short.url';
+    const accountId = 'account-id';
+    mockConfigService.get.mockReturnValue(baseUrl);
+
+    // Act
+    await sut.execute({ originalUrl }, accountId);
+
+    // Assert
+    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.any(Url), accountId);
   });
 
   it('should return a short url', async() => {
@@ -67,6 +80,6 @@ describe('CreateUrlUseCase', () => {
 
     // Assert
     expect(result).toHaveProperty('id', id);
-    expect(result).toHaveProperty('shortUrl', expect.any(String));
+    expect(result).toHaveProperty('shortUrl', expect.stringContaining(baseUrl));
   });
 });
