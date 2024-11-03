@@ -15,5 +15,8 @@ import { JwtAuthModule } from './jwt.module';
   providers: [
     LoginUseCase,
   ],
+  exports: [
+    JwtAuthModule,
+  ],
 })
 export class AuthenticationModule {}

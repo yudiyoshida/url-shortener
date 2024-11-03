@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Protected } from 'src/modules/authentication/decorators/required-role.decorator';
 import { ParamsDto } from 'src/shared/dto/params.dto';
 import { QueriesDto } from 'src/shared/dto/queries.dto';
 import { SuccessMessage } from 'src/shared/dto/success-message.dto';
@@ -33,6 +34,7 @@ export class UrlController {
   }
 
   @Get()
+  @Protected('full')
   @Swagger({
     tags: ['Url'],
     summary: 'Rota utilizada para buscar todas as URLs',
@@ -44,6 +46,7 @@ export class UrlController {
   }
 
   @Patch(':id')
+  @Protected('full')
   @Swagger({
     tags: ['Url'],
     summary: 'Rota utilizada para atualizar uma URL',
@@ -56,6 +59,7 @@ export class UrlController {
   }
 
   @Delete(':id')
+  @Protected('full')
   @Swagger({
     tags: ['Url'],
     summary: 'Rota utilizada para deletar uma URL',

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppConfigModule } from 'src/core/app-config.module';
 import { PrismaModule } from 'src/shared/infra/database/prisma.module';
 import { TOKENS } from 'src/shared/ioc/tokens';
+import { AuthenticationModule } from '../authentication/authentication.module';
 import { CreateUrlUseCase } from './application/usecases/create-url/create-url.service';
 import { DeleteUrlUseCase } from './application/usecases/delete-url/delete-url.service';
 import { GetAllUrlsUseCase } from './application/usecases/get-all-urls/get-all-urls.service';
@@ -14,6 +15,7 @@ import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.d
 @Module({
   imports: [
     AppConfigModule,
+    AuthenticationModule,
     PrismaModule,
   ],
   controllers: [
