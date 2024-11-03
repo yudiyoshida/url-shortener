@@ -1,47 +1,79 @@
-import { TestBed } from '@automock/jest';
-import { createMock } from '@golevelup/ts-jest';
 import { NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UrlModule } from 'src/modules/url/url.module';
 import { Errors } from 'src/shared/errors/messages';
-import { TOKENS } from 'src/shared/ioc/tokens';
-import { UrlDaoDto } from '../../persistence/dao/url-dao.dto';
-import { UrlDao } from '../../persistence/dao/url-dao.interface';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
+import { CreateUrlUseCase } from '../create-url/create-url.service';
 import { GetUrlUseCase } from './get-url.service';
 
 describe('GetAllUrlsUseCase', () => {
   let sut: GetUrlUseCase;
-  let mockUrlDao: jest.Mocked<UrlDao>;
+  let createUrlUseCase: CreateUrlUseCase;
+  let database: PrismaService;
 
-  beforeEach(() => {
-    const { unit, unitRef } = TestBed.create(GetUrlUseCase).compile();
+  beforeEach(async() => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [UrlModule],
+    }).compile();
 
-    sut = unit;
-    mockUrlDao = unitRef.get(TOKENS.UrlDao);
+    sut = module.get<GetUrlUseCase>(GetUrlUseCase);
+    createUrlUseCase = module.get<CreateUrlUseCase>(CreateUrlUseCase);
+    database = module.get<PrismaService>(PrismaService);
+
+    await database.url.deleteMany({});
+  });
+
+  afterAll(async() => {
+    await database.url.deleteMany({});
+    await database.$disconnect();
   });
 
   it('should be defined', () => {
     expect(sut).toBeDefined();
   });
 
-  it('should throw an error if the url is not found', async() => {
+  it('should throw an error if url is not found (different shortUrl)', async() => {
     // Arrange
-    mockUrlDao.findByUrl.mockResolvedValue(null);
+    const originalUrl = 'https://teddydigital.io';
+    await createUrlUseCase.execute({ originalUrl });
 
     // Act & Assert
-    return sut.execute('short-url').catch((error) => {
+    expect.assertions(2);
+    return sut.execute('not-found').catch((error) => {
       expect(error).toBeInstanceOf(NotFoundException);
       expect(error.message).toBe(Errors.URL_NOT_FOUND);
     });
   });
 
-  it('should return the url if it is found', async() => {
+  it('should throw an error if url is not found (case sensitive)', async() => {
     // Arrange
-    const mockUrl = createMock<UrlDaoDto>();
-    mockUrlDao.findByUrl.mockResolvedValue(mockUrl);
+    const originalUrl = 'https://teddydigital.io';
+    const createUrlOutput = await createUrlUseCase.execute({ originalUrl });
+    const shortUrl = createUrlOutput.shortUrl.split('/').pop();
+
+    // Act & Assert
+    expect.assertions(2);
+    return sut.execute(shortUrl!.toUpperCase()).catch((error) => {
+      expect(error).toBeInstanceOf(NotFoundException);
+      expect(error.message).toBe(Errors.URL_NOT_FOUND);
+    });
+  });
+
+  it('should return the url', async() => {
+    // Arrange
+    const originalUrl = 'https://teddydigital.io';
+    const createUrlOutput = await createUrlUseCase.execute({ originalUrl });
+    const shortUrl = createUrlOutput.shortUrl.split('/').pop();
 
     // Act
-    const result = await sut.execute('short-url');
+    const url = await sut.execute(shortUrl!);
 
     // Assert
-    expect(result).toBe(mockUrl);
+    expect(url).toHaveProperty('id', createUrlOutput.id);
+    expect(url).toHaveProperty('originalUrl', originalUrl);
+    expect(url).toHaveProperty('shortUrl', shortUrl);
+    expect(url).toHaveProperty('clicks', 0);
+    expect(url).toHaveProperty('createdAt', expect.any(Date));
+    expect(url).toHaveProperty('updatedAt', expect.any(Date));
   });
 });
