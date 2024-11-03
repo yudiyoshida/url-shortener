@@ -34,6 +34,7 @@ import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.d
   ],
   exports: [
     GetUrlUseCase,
+    IncrementClickUseCase,
   ],
 })
 export class UrlModule {}
