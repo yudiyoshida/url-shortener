@@ -19,16 +19,16 @@ export class AuthenticationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
 
-    if (protectionLevel === 'partial') {
-      return true;
-    }
-
-    if (!token) {
+    if (protectionLevel === 'full' && !token) {
       throw new UnauthorizedException();
     }
 
+    if (protectionLevel === 'partial' && !token) {
+      return true;
+    }
+
     try {
-      const payload = await this.jwtService.verifyAsync(token, { secret: process.env.JWT_SECRET });
+      const payload = await this.jwtService.verifyAsync(token!, { secret: process.env.JWT_SECRET });
       request['user'] = payload;
 
     } catch {

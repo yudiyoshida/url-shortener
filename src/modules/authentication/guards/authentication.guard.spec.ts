@@ -34,55 +34,89 @@ describe('AuthenticationGuard', () => {
     expect(sut).toBeDefined();
   });
 
-  it('should return true if protection level is partial', async() => {
-    // Arrange
-    const context = createMock<ExecutionContext>();
-    mockReflector.getAllAndOverride.mockReturnValue('partial');
+  describe('Protection full', () => {
+    it('should throw UnauthorizedException if protection level is full and token is not provided', async() => {
+      // Arrange
+      const context = contextMockFactory();
+      mockReflector.getAllAndOverride.mockReturnValue('full');
 
-    // Act
-    const result = await sut.canActivate(context);
-
-    // Assert
-    expect(result).toBe(true);
-  });
-
-  it('should throw UnauthorizedException if token is not provided', async() => {
-    // Arrange
-    const context = createMock<ExecutionContext>();
-    mockReflector.getAllAndOverride.mockReturnValue('full');
-
-    // Act & Assert
-    expect.assertions(1);
-    return sut.canActivate(context).catch((error) => {
-      expect(error).toBeInstanceOf(UnauthorizedException);
+      // Act & Assert
+      expect.assertions(2);
+      return sut.canActivate(context).catch((error) => {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(mockJwtService.verifyAsync).not.toHaveBeenCalled();
+      });
     });
-  });
 
-  it('should throw UnauthorizedException if token is invalid', async() => {
-    // Arrange
-    const context = contextMockFactory('token');
-    mockReflector.getAllAndOverride.mockReturnValue('full');
-    mockJwtService.verifyAsync.mockRejectedValue(new Error());
+    it('should throw UnauthorizedException if protection level is full and token provided is invalid', async() => {
+      // Arrange
+      const context = contextMockFactory('token');
+      mockReflector.getAllAndOverride.mockReturnValue('full');
+      mockJwtService.verifyAsync.mockRejectedValue(new Error());
 
-    // Act & Assert
-    expect.assertions(2);
-    return sut.canActivate(context).catch((error) => {
-      expect(error).toBeInstanceOf(UnauthorizedException);
+      // Act & Assert
+      expect.assertions(2);
+      return sut.canActivate(context).catch((error) => {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(mockJwtService.verifyAsync).toHaveBeenCalled();
+      });
+    });
+
+    it('should return true if protection level is full and token is valid', async() => {
+      // Arrange
+      const context = contextMockFactory('token');
+      mockReflector.getAllAndOverride.mockReturnValue('full');
+      mockJwtService.verifyAsync.mockResolvedValue({});
+
+      // Act
+      const result = await sut.canActivate(context);
+
+      // Assert
+      expect(result).toBe(true);
       expect(mockJwtService.verifyAsync).toHaveBeenCalled();
     });
   });
 
-  it('should return true if token is valid', async() => {
-    // Arrange
-    const context = contextMockFactory('token');
-    mockReflector.getAllAndOverride.mockReturnValue('full');
-    mockJwtService.verifyAsync.mockResolvedValue({});
+  describe('Protection partial', () => {
+    it('should return true if protection level is partial and token is not provided', async() => {
+      // Arrange
+      const context = contextMockFactory();
+      mockReflector.getAllAndOverride.mockReturnValue('partial');
 
-    // Act
-    const result = await sut.canActivate(context);
+      // Act
+      const result = await sut.canActivate(context);
 
-    // Assert
-    expect(result).toBe(true);
-    expect(mockJwtService.verifyAsync).toHaveBeenCalled();
+      // Assert
+      expect(result).toBe(true);
+      expect(mockJwtService.verifyAsync).not.toHaveBeenCalled();
+    });
+
+    it('should throw UnauthorizedException if protection level is partial and token provided is invalid', async() => {
+      // Arrange
+      const context = contextMockFactory('token');
+      mockReflector.getAllAndOverride.mockReturnValue('partial');
+      mockJwtService.verifyAsync.mockRejectedValue(new Error());
+
+      // Act & Assert
+      expect.assertions(2);
+      return sut.canActivate(context).catch((error) => {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(mockJwtService.verifyAsync).toHaveBeenCalled();
+      });
+    });
+
+    it('should return true if protection level is partial and token is valid', async() => {
+      // Arrange
+      const context = contextMockFactory('token');
+      mockReflector.getAllAndOverride.mockReturnValue('partial');
+      mockJwtService.verifyAsync.mockResolvedValue({});
+
+      // Act
+      const result = await sut.canActivate(context);
+
+      // Assert
+      expect(result).toBe(true);
+      expect(mockJwtService.verifyAsync).toHaveBeenCalled();
+    });
   });
 });
