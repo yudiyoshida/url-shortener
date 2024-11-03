@@ -44,8 +44,8 @@ export class UrlController {
     applyBadRequest: true,
     okPaginatedResponse: UrlDaoDto,
   })
-  public async getAllUrls(@Query() queries: QueriesDto): Promise<IPagination<UrlDaoDto>> {
-    return this.getAllUrlsUseCase.execute(queries.page, queries.size);
+  public async getAllUrls(@Query() queries: QueriesDto, @Account() acc: PayloadDto): Promise<IPagination<UrlDaoDto>> {
+    return this.getAllUrlsUseCase.execute(acc.sub, queries.page, queries.size);
   }
 
   @Patch(':id')

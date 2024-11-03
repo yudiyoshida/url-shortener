@@ -12,8 +12,8 @@ export class GetAllUrlsUseCase {
     @Inject(TOKENS.UrlDao) private readonly urlDao: UrlDao
   ) {}
 
-  public async execute(page?: number, size?: number): Promise<IPagination<UrlDaoDto>> {
-    const [urls, count] = await this.urlDao.findAll(page, size);
+  public async execute(accountId: string, page?: number, size?: number): Promise<IPagination<UrlDaoDto>> {
+    const [urls, count] = await this.urlDao.findAll(accountId, page, size);
 
     const formattedUrls = urls.map((url) => ({
       ...url,

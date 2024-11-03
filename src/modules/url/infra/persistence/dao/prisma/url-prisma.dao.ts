@@ -20,8 +20,11 @@ const urlSelect = {
 export class UrlPrismaAdapterDao implements UrlDao {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findAll(page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
-    const where: Prisma.UrlWhereInput = { deletedAt: null };
+  public async findAll(accountId: string, page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
+    const where: Prisma.UrlWhereInput = {
+      deletedAt: null,
+      accountId,
+    };
 
     return this.prisma.$transaction([
       this.prisma.url.findMany({

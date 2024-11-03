@@ -10,8 +10,10 @@ import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 export class UrlInMemoryAdapterDao implements UrlDao {
   private _urls: UrlDaoDto[] = [];
 
-  public async findAll(page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
-    return [this._urls, this._urls.length];
+  public async findAll(accountId: string, page?: number, size?: number): Promise<[UrlDaoDto[], number]> {
+    const urls = this._urls.filter((u) => u.accountId === accountId);
+
+    return [urls, urls.length];
   }
 
   public async findById(id: string): Promise<UrlDaoDto | null> {
