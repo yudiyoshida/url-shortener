@@ -70,7 +70,7 @@ export class UrlController {
     applyNotFound: true,
     okResponse: SuccessMessage,
   })
-  public async deleteUrl(@Param() params: ParamsDto): Promise<SuccessMessage> {
-    return this.deleteUrlUseCase.execute(params.id);
+  public async deleteUrl(@Param() params: ParamsDto, @Account() acc: PayloadDto): Promise<SuccessMessage> {
+    return this.deleteUrlUseCase.execute(params.id, acc.sub);
   }
 }

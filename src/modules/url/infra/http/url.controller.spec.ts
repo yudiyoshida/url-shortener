@@ -111,21 +111,27 @@ describe('UrlController', () => {
   //   });
   // });
 
-  // describe('DELETE /urls/{id}', () => {
-  //   it('should delete the url', async() => {
-  //     // Arrange
-  //     const originalUrl = 'https://teddydigital.io';
-  //     const createOutput = await sut.createUrl({ originalUrl });
-  //     expect((await sut.getAllUrls({})).data.length).toBe(1);
+  describe('DELETE /urls/{id}', () => {
+    it('should delete the url', async() => {
+      const registerOutput = await registerUseCase.execute({
+        name: 'Teddy',
+        email: 'teddy@email.com',
+        password: '123456789',
+      });
 
-  //     // Act
-  //     const deleteOutput = await sut.deleteUrl({ id: createOutput.id });
+      // Arrange
+      const originalUrl = 'https://teddydigital.io';
+      const createOutput = await sut.createUrl({ originalUrl }, { sub: registerOutput.id });
+      expect((await sut.getAllUrls({})).data.length).toBe(1);
 
-  //     // Assert
-  //     expect(deleteOutput).toEqual({ message: 'Url deletada com sucesso.' });
+      // Act
+      const deleteOutput = await sut.deleteUrl({ id: createOutput.id }, { sub: registerOutput.id });
 
-  //     const getAllOutput = await sut.getAllUrls({});
-  //     expect(getAllOutput.data.length).toBe(0);
-  //   });
-  // });
+      // Assert
+      expect(deleteOutput).toEqual({ message: 'Url deletada com sucesso.' });
+
+      const getAllOutput = await sut.getAllUrls({});
+      expect(getAllOutput.data.length).toBe(0);
+    });
+  });
 });

@@ -6,6 +6,7 @@ import { AuthenticationModule } from '../authentication/authentication.module';
 import { CreateUrlUseCase } from './application/usecases/create-url/create-url.service';
 import { DeleteUrlUseCase } from './application/usecases/delete-url/delete-url.service';
 import { GetAllUrlsUseCase } from './application/usecases/get-all-urls/get-all-urls.service';
+import { GetUrlByIdAndAccountIdUseCase } from './application/usecases/get-url-by-id-and-account-id/get-url-by-id-and-account-id.service';
 import { GetUrlUseCase } from './application/usecases/get-url/get-url.service';
 import { IncrementClickUseCase } from './application/usecases/increment-click/increment-click.service';
 import { UpdateUrlUseCase } from './application/usecases/update-url/update-url.service';
@@ -24,6 +25,7 @@ import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.d
   providers: [
     CreateUrlUseCase,
     GetAllUrlsUseCase,
+    GetUrlByIdAndAccountIdUseCase,
     GetUrlUseCase,
     UpdateUrlUseCase,
     DeleteUrlUseCase,
