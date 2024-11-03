@@ -89,27 +89,33 @@ describe('UrlController', () => {
   //   });
   // });
 
-  // describe('PATCH /urls/{id}', () => {
-  //   it('should update the url', async() => {
-  //     // Arrange
-  //     const originalUrl = 'https://teddydigital.io';
-  //     const createOutput = await sut.createUrl({ originalUrl });
+  describe('PATCH /urls/{id}', () => {
+    it('should update the url', async() => {
+      // Arrange
+      const registerOutput = await registerUseCase.execute({
+        name: 'Teddy',
+        email: 'teddy@email.com',
+        password: '123456789',
+      });
 
-  //     const newUrl = 'https://teddydigital.com';
+      const originalUrl = 'https://teddydigital.io';
+      const createOutput = await sut.createUrl({ originalUrl }, { sub: registerOutput.id });
 
-  //     // Act
-  //     const updateOutput = await sut.updateUrl({ id: createOutput.id }, { newUrl });
+      const newUrl = 'https://teddydigital.com';
 
-  //     // Assert
-  //     expect(updateOutput).toEqual({ message: 'Url atualizada com sucesso.' });
+      // Act
+      const updateOutput = await sut.updateUrl({ id: createOutput.id }, { sub: registerOutput.id }, { newUrl });
 
-  //     const getAllOutput = await sut.getAllUrls({});
-  //     expect(getAllOutput.data.length).toBe(1);
-  //     expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
-  //     expect(getAllOutput.data[0]).toHaveProperty('originalUrl', newUrl);
-  //     expect(getAllOutput.data[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
-  //   });
-  // });
+      // Assert
+      expect(updateOutput).toEqual({ message: 'Url atualizada com sucesso.' });
+
+      const getAllOutput = await sut.getAllUrls({});
+      expect(getAllOutput.data.length).toBe(1);
+      expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
+      expect(getAllOutput.data[0]).toHaveProperty('originalUrl', newUrl);
+      expect(getAllOutput.data[0]).toHaveProperty('shortUrl', createOutput.shortUrl);
+    });
+  });
 
   describe('DELETE /urls/{id}', () => {
     it('should delete the url', async() => {

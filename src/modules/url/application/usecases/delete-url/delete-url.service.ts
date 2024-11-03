@@ -8,7 +8,7 @@ import { GetUrlByIdAndAccountIdUseCase } from '../get-url-by-id-and-account-id/g
 export class DeleteUrlUseCase {
   constructor(
     @Inject(TOKENS.UrlDao) private readonly urlDao: UrlDao,
-    private getUrlByIdAndAccountIdUseCase: GetUrlByIdAndAccountIdUseCase
+    private readonly getUrlByIdAndAccountIdUseCase: GetUrlByIdAndAccountIdUseCase
   ) {}
 
   public async execute(urlId: string, accountId: string): Promise<SuccessMessage> {

@@ -57,8 +57,12 @@ export class UrlController {
     applyNotFound: true,
     okResponse: SuccessMessage,
   })
-  public async updateUrl(@Param() params: ParamsDto, @Body() body: UpdateUrlInputDto): Promise<SuccessMessage> {
-    return this.updateUrlUseCase.execute(params.id, body);
+  public async updateUrl(
+    @Param() params: ParamsDto,
+    @Account() acc: PayloadDto,
+    @Body() body: UpdateUrlInputDto
+  ): Promise<SuccessMessage> {
+    return this.updateUrlUseCase.execute(params.id, acc.sub, body);
   }
 
   @Delete(':id')

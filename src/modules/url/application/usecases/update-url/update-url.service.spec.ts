@@ -1,54 +1,42 @@
 import { TestBed } from '@automock/jest';
 import { createMock } from '@golevelup/ts-jest';
-import { NotFoundException } from '@nestjs/common';
-import { Errors } from 'src/shared/errors/messages';
 import { TOKENS } from 'src/shared/ioc/tokens';
 import { UrlDaoDto } from '../../persistence/dao/url-dao.dto';
 import { UrlDao } from '../../persistence/dao/url-dao.interface';
+import { GetUrlByIdAndAccountIdUseCase } from '../get-url-by-id-and-account-id/get-url-by-id-and-account-id.service';
 import { UpdateUrlUseCase } from './update-url.service';
 
 describe('UpdateUrlUseCase', () => {
   let sut: UpdateUrlUseCase;
   let mockUrlDao: jest.Mocked<UrlDao>;
+  let mockGetUrlByIdAndAccountIdUseCase: jest.Mocked<GetUrlByIdAndAccountIdUseCase>;
 
   beforeEach(() => {
     const { unit, unitRef } = TestBed.create(UpdateUrlUseCase).compile();
 
     sut = unit;
     mockUrlDao = unitRef.get(TOKENS.UrlDao);
+    mockGetUrlByIdAndAccountIdUseCase = unitRef.get(GetUrlByIdAndAccountIdUseCase);
   });
 
   it('should be defined', () => {
     expect(sut).toBeDefined();
   });
 
-  it('should throw an error if url is not found', async() => {
-    // Arrange
-    const id = 'url-id';
-    const newUrl = 'https://google.com';
-    mockUrlDao.findById.mockResolvedValue(null);
-
-    // Act & Assert
-    expect.assertions(2);
-    return sut.execute(id, { newUrl }).catch(err => {
-      expect(err).toBeInstanceOf(NotFoundException);
-      expect(err.message).toBe(Errors.URL_NOT_FOUND);
-    });
-  });
-
   it('should update the url and return a success message', async() => {
     // Arrange
     const id = 'url-id';
     const newUrl = 'https://google.com';
-    const mockUrl = createMock<UrlDaoDto>();
-    mockUrlDao.findById.mockResolvedValue(mockUrl);
+    const accountId = 'account-id';
+    const mockUrl = createMock<UrlDaoDto>({ accountId });
+    mockGetUrlByIdAndAccountIdUseCase.execute.mockResolvedValue(mockUrl);
 
     // Act
-    const result = await sut.execute(id, { newUrl });
+    const result = await sut.execute(id, accountId, { newUrl });
 
     // Assert
-    expect(mockUrlDao.findById).toHaveBeenNthCalledWith(1, id);
-    expect(mockUrlDao.update).toHaveBeenCalledTimes(1);
+    expect(mockGetUrlByIdAndAccountIdUseCase.execute).toHaveBeenNthCalledWith(1, id, accountId);
+    expect(mockUrlDao.update).toHaveBeenNthCalledWith(1, mockUrl.id, newUrl);
     expect(result).toEqual({ message: 'Url atualizada com sucesso.' });
   });
 });
