@@ -8,7 +8,7 @@ import { AuthenticationModule } from '../../authentication.module';
 import { AuthenticationController } from './authentication.controller';
 
 describe('AuthenticationController', () => {
-  let controller: AuthenticationController;
+  let sut: AuthenticationController;
   let registerUseCase: RegisterUseCase;
   let database: PrismaService;
 
@@ -17,7 +17,7 @@ describe('AuthenticationController', () => {
       imports: [AuthenticationModule],
     }).compile();
 
-    controller = module.get<AuthenticationController>(AuthenticationController);
+    sut = module.get<AuthenticationController>(AuthenticationController);
     registerUseCase = module.get<RegisterUseCase>(RegisterUseCase);
     database = module.get<PrismaService>(PrismaService);
 
@@ -30,7 +30,7 @@ describe('AuthenticationController', () => {
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(sut).toBeDefined();
   });
 
   it('should throw an error when credentials are invalid', async() => {
@@ -42,7 +42,7 @@ describe('AuthenticationController', () => {
 
     // Act & Assert
     expect.assertions(2);
-    return controller.login(data).catch(error => {
+    return sut.login(data).catch(error => {
       expect(error).toBeInstanceOf(BadRequestException);
       expect(error.message).toBe(Errors.INVALID_CREDENTIALS);
     });
@@ -61,7 +61,7 @@ describe('AuthenticationController', () => {
     });
 
     // Act
-    const result = await controller.login(data);
+    const result = await sut.login(data);
 
     // Assert
     expect(result).toHaveProperty('token', expect.any(String));

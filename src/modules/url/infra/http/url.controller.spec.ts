@@ -4,7 +4,7 @@ import { UrlModule } from '../../url.module';
 import { UrlController } from './url.controller';
 
 describe('UrlController', () => {
-  let controller: UrlController;
+  let sut: UrlController;
   let database: PrismaService;
 
   beforeEach(async() => {
@@ -12,7 +12,7 @@ describe('UrlController', () => {
       imports: [UrlModule],
     }).compile();
 
-    controller = module.get<UrlController>(UrlController);
+    sut = module.get<UrlController>(UrlController);
     database = module.get<PrismaService>(PrismaService);
 
     await database.url.deleteMany({});
@@ -24,7 +24,7 @@ describe('UrlController', () => {
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(sut).toBeDefined();
   });
 
   describe('POST /urls', () => {
@@ -33,10 +33,10 @@ describe('UrlController', () => {
       const originalUrl = 'https://teddydigital.io';
 
       // Act
-      const createOutput = await controller.createUrl({ originalUrl });
+      const createOutput = await sut.createUrl({ originalUrl });
 
       // Assert
-      const getAllOutput = await controller.getAllUrls({});
+      const getAllOutput = await sut.getAllUrls({});
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', originalUrl);
@@ -51,10 +51,10 @@ describe('UrlController', () => {
     it('should not return deletedAt information', async() => {
       // Arrange
       const originalUrl = 'https://teddydigital.io';
-      await controller.createUrl({ originalUrl });
+      await sut.createUrl({ originalUrl });
 
       // Act
-      const getAllOutput = await controller.getAllUrls({});
+      const getAllOutput = await sut.getAllUrls({});
 
       // Assert
       expect(getAllOutput.data.length).toBe(1);
@@ -66,17 +66,17 @@ describe('UrlController', () => {
     it('should update the url', async() => {
       // Arrange
       const originalUrl = 'https://teddydigital.io';
-      const createOutput = await controller.createUrl({ originalUrl });
+      const createOutput = await sut.createUrl({ originalUrl });
 
       const newUrl = 'https://teddydigital.com';
 
       // Act
-      const updateOutput = await controller.updateUrl({ id: createOutput.id }, { newUrl });
+      const updateOutput = await sut.updateUrl({ id: createOutput.id }, { newUrl });
 
       // Assert
       expect(updateOutput).toEqual({ message: 'Url atualizada com sucesso.' });
 
-      const getAllOutput = await controller.getAllUrls({});
+      const getAllOutput = await sut.getAllUrls({});
       expect(getAllOutput.data.length).toBe(1);
       expect(getAllOutput.data[0]).toHaveProperty('id', createOutput.id);
       expect(getAllOutput.data[0]).toHaveProperty('originalUrl', newUrl);
@@ -88,16 +88,16 @@ describe('UrlController', () => {
     it('should delete the url', async() => {
       // Arrange
       const originalUrl = 'https://teddydigital.io';
-      const createOutput = await controller.createUrl({ originalUrl });
-      expect((await controller.getAllUrls({})).data.length).toBe(1);
+      const createOutput = await sut.createUrl({ originalUrl });
+      expect((await sut.getAllUrls({})).data.length).toBe(1);
 
       // Act
-      const deleteOutput = await controller.deleteUrl({ id: createOutput.id });
+      const deleteOutput = await sut.deleteUrl({ id: createOutput.id });
 
       // Assert
       expect(deleteOutput).toEqual({ message: 'Url deletada com sucesso.' });
 
-      const getAllOutput = await controller.getAllUrls({});
+      const getAllOutput = await sut.getAllUrls({});
       expect(getAllOutput.data.length).toBe(0);
     });
   });

@@ -5,7 +5,7 @@ import { RegisterInputDto } from '../../application/usecases/register/dtos/regis
 import { AccountController } from './account.controller';
 
 describe('AccountController', () => {
-  let controller: AccountController;
+  let sut: AccountController;
   let database: PrismaService;
 
   beforeEach(async() => {
@@ -13,7 +13,7 @@ describe('AccountController', () => {
       imports: [AccountModule],
     }).compile();
 
-    controller = module.get<AccountController>(AccountController);
+    sut = module.get<AccountController>(AccountController);
     database = module.get<PrismaService>(PrismaService);
 
     await database.account.deleteMany({});
@@ -25,7 +25,7 @@ describe('AccountController', () => {
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(sut).toBeDefined();
   });
 
   it('should create a new account', async() => {
@@ -37,7 +37,7 @@ describe('AccountController', () => {
     };
 
     // Act
-    const result = await controller.register(data);
+    const result = await sut.register(data);
 
     // Assert
     expect(result).toHaveProperty('id', expect.any(String));
