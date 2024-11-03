@@ -66,6 +66,15 @@ export class UrlPrismaAdapterDao implements UrlDao {
     });
   }
 
+  public async incrementClick(shortUrl: string): Promise<void> {
+    await this.prisma.url.update({
+      where: { shortUrl },
+      data: {
+        clicks: { increment: 1 },
+      },
+    });
+  }
+
   public async delete(id: string): Promise<void> {
     await this.prisma.url.update({
       where: { id },

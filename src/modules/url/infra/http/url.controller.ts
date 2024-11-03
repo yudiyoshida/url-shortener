@@ -12,7 +12,7 @@ import { GetAllUrlsUseCase } from '../../application/usecases/get-all-urls/get-a
 import { UpdateUrlInputDto } from '../../application/usecases/update-url/dtos/update-url.dto';
 import { UpdateUrlUseCase } from '../../application/usecases/update-url/update-url.service';
 
-@Controller('urls')
+@Controller()
 export class UrlController {
   constructor(
     private readonly createUrlUseCase: CreateUrlUseCase,

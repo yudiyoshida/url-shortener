@@ -5,6 +5,8 @@ import { TOKENS } from 'src/shared/ioc/tokens';
 import { CreateUrlUseCase } from './application/usecases/create-url/create-url.service';
 import { DeleteUrlUseCase } from './application/usecases/delete-url/delete-url.service';
 import { GetAllUrlsUseCase } from './application/usecases/get-all-urls/get-all-urls.service';
+import { GetUrlUseCase } from './application/usecases/get-url/get-url.service';
+import { IncrementClickUseCase } from './application/usecases/increment-click/increment-click.service';
 import { UpdateUrlUseCase } from './application/usecases/update-url/update-url.service';
 import { UrlController } from './infra/http/url.controller';
 import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.dao';
@@ -20,13 +22,18 @@ import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.d
   providers: [
     CreateUrlUseCase,
     GetAllUrlsUseCase,
+    GetUrlUseCase,
     UpdateUrlUseCase,
     DeleteUrlUseCase,
+    IncrementClickUseCase,
     {
       provide: TOKENS.UrlDao,
       // useClass: UrlInMemoryAdapterDao,
       useClass: UrlPrismaAdapterDao,
     },
+  ],
+  exports: [
+    GetUrlUseCase,
   ],
 })
 export class UrlModule {}

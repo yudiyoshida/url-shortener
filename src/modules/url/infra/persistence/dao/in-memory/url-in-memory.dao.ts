@@ -50,4 +50,13 @@ export class UrlInMemoryAdapterDao implements UrlDao {
   public async delete(id: string): Promise<void> {
     this._urls = this._urls.filter((u) => u.id !== id);
   }
+
+  public async incrementClick(shortUrl: string): Promise<void> {
+    const url = await this.findByUrl(shortUrl);
+    if (!url) {
+      return;
+    }
+
+    url.clicks++;
+  }
 }

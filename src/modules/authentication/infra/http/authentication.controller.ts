@@ -3,7 +3,7 @@ import { Swagger } from 'src/shared/infra/openapi/swagger';
 import { LoginInputDto, LoginOutputDto } from '../../application/usecases/login/dtos/login.dto';
 import { LoginUseCase } from '../../application/usecases/login/login.service';
 
-@Controller('auth')
+@Controller()
 export class AuthenticationController {
   constructor(
     private readonly loginUseCase: LoginUseCase,

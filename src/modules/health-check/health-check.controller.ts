@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { Swagger } from 'src/shared/infra/openapi/swagger';
 import { HealthCheckService } from './health-check.service';
 
-@Controller('health-check')
+@Controller()
 export class HealthCheckController {
   constructor(private readonly healthCheckService: HealthCheckService) {}
 
