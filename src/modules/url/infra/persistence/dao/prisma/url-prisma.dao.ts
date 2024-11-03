@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { UrlDaoDto } from 'src/modules/url/application/persistence/dao/url-dao.dto';
-import { UrlDao } from 'src/modules/url/application/persistence/dao/url-dao.interface';
-import { Url } from 'src/modules/url/domain/value-objects/url.vo';
+import { UrlDao, UrlSaveDto } from 'src/modules/url/application/persistence/dao/url-dao.interface';
 import { PrismaService } from 'src/shared/infra/database/prisma.service';
 
 const urlSelect = {
@@ -51,14 +50,9 @@ export class UrlPrismaAdapterDao implements UrlDao {
     });
   }
 
-  public async save(url: Url, accountId?: string): Promise<string> {
+  public async save(data: UrlSaveDto): Promise<string> {
     const newUrl = await this.prisma.url.create({
-      data: {
-        originalUrl: url.originalUrl,
-        shortUrl: url.shortUrl,
-        clicks: 0,
-        accountId,
-      },
+      data,
     });
 
     return newUrl.id;

@@ -3,8 +3,7 @@ import * as crypto from 'crypto';
 
 import { Injectable } from '@nestjs/common';
 import { UrlDaoDto } from 'src/modules/url/application/persistence/dao/url-dao.dto';
-import { UrlDao } from 'src/modules/url/application/persistence/dao/url-dao.interface';
-import { Url } from 'src/modules/url/domain/value-objects/url.vo';
+import { UrlDao, UrlSaveDto } from 'src/modules/url/application/persistence/dao/url-dao.interface';
 
 @Injectable()
 export class UrlInMemoryAdapterDao implements UrlDao {
@@ -24,17 +23,14 @@ export class UrlInMemoryAdapterDao implements UrlDao {
     return this._urls.find((u) => u.shortUrl === url) ?? null;
   }
 
-  public async save(url: Url, accountId?: string): Promise<string> {
+  public async save(data: UrlSaveDto): Promise<string> {
     const id = crypto.randomUUID();
 
     this._urls.push({
+      ...data,
       id,
-      originalUrl: url.originalUrl,
-      shortUrl: url.shortUrl,
-      clicks: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      accountId: accountId ?? null,
     });
 
     return id;

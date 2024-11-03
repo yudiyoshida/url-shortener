@@ -1,7 +1,6 @@
 import { TestBed } from '@automock/jest';
 import { createMock } from '@golevelup/ts-jest';
 import { ConfigService } from '@nestjs/config';
-import { Url } from 'src/modules/url/domain/value-objects/url.vo';
 import { TOKENS } from 'src/shared/ioc/tokens';
 import { UrlDaoDto } from '../../persistence/dao/url-dao.dto';
 import { UrlDao } from '../../persistence/dao/url-dao.interface';
@@ -50,7 +49,7 @@ describe('CreateUrlUseCase', () => {
     await sut.execute({ originalUrl });
 
     // Assert
-    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.any(Url), undefined);
+    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.objectContaining({ accountId: undefined }));
   });
 
   it('should save the short url (logged)', async() => {
@@ -64,7 +63,7 @@ describe('CreateUrlUseCase', () => {
     await sut.execute({ originalUrl }, accountId);
 
     // Assert
-    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.any(Url), accountId);
+    expect(mockUrlDao.save).toHaveBeenCalledWith(expect.objectContaining({ accountId }));
   });
 
   it('should return a short url', async() => {
