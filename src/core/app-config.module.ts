@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
         DATABASE_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
       }),
+      expandVariables: true,
     }),
   ],
   exports: [ConfigModule],

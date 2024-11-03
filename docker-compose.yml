@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "npm run db:migration && npm start"
+    container_name: app_url_shortener
+    depends_on:
+      app_postgres:
+        condition:
+          service_healthy
+    environment:
+      PORT: ${PORT}
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@app_postgres:${DATABASE_PORT}/${DATABASE_NAME}?schema=public
+    ports:
+      - "${PORT}:${PORT}"
+    restart: always
+
+  app_postgres:
+    image: postgres:14.5
+    container_name: postgres_url_shortener
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: url_shortener
+      POSTGRES_DB_PORT: ${DATABASE_PORT}
+    healthcheck:
+      # test: ["CMD-SHELL", "pg_isready", "-d", "${DB_NAME}", "-U", "${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -p 5432"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    restart: always
+    volumes:
+      - app_volume:/var/lib/postgresql/data
+
+volumes:
+  app_volume:
+    driver: local
