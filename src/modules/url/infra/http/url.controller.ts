@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { Account } from 'src/modules/authentication/decorators/account.decorator';
-import { Protected } from 'src/modules/authentication/decorators/required-role.decorator';
+import { Protected } from 'src/modules/authentication/decorators/protected.decorator';
 import { PayloadDto } from 'src/modules/authentication/dtos/payload.dto';
 import { ParamsDto } from 'src/shared/dto/params.dto';
 import { QueriesDto } from 'src/shared/dto/queries.dto';

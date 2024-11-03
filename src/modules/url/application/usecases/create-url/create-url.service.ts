@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UrlService } from 'src/modules/url/domain/services/Url.service';
+import { UrlService } from 'src/modules/url/domain/services/url.service';
 import { TOKENS } from 'src/shared/ioc/tokens';
 import { UrlDao } from '../../persistence/dao/url-dao.interface';
 import { CreateUrlInputDto, CreateUrlOutputDto } from './dto/create-url.dto';
