@@ -28,7 +28,7 @@ export class UrlController {
   @Protected('partial')
   @Swagger({
     tags: ['Url'],
-    summary: 'Rota utilizada para criar uma nova URL',
+    summary: 'Rota utilizada para encurtar uma URL',
     applyBadRequest: true,
     createdResponse: CreateUrlOutputDto,
   })
