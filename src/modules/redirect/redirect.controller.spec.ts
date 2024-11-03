@@ -1,19 +1,36 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestBed } from '@automock/jest';
+import { createMock } from '@golevelup/ts-jest';
+import { Response } from 'express';
 import { RedirectController } from './redirect.controller';
-import { RedirectModule } from './redirect.module';
+import { RedirectService } from './redirect.service';
 
 describe('RedirectController', () => {
-  let controller: RedirectController;
+  let sut: RedirectController;
+  let mockRedirectService: jest.Mocked<RedirectService>;
 
-  beforeEach(async() => {
-    const app: TestingModule = await Test.createTestingModule({
-      imports: [RedirectModule],
-    }).compile();
+  beforeEach(() => {
+    const { unit, unitRef } = TestBed.create(RedirectController).compile();
 
-    controller = app.get<RedirectController>(RedirectController);
+    sut = unit;
+    mockRedirectService = unitRef.get(RedirectService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(sut).toBeDefined();
+  });
+
+  it('should redirect to original url', async() => {
+    // Arrange
+    const shortUrl = 'short-url';
+    const originalUrl = 'original-url';
+    const mockResponse = createMock<Response>();
+    mockRedirectService.execute.mockResolvedValue(originalUrl);
+
+    // Act
+    await sut.getShortUrl(shortUrl, mockResponse);
+
+    // Assert
+    expect(mockRedirectService.execute).toHaveBeenCalledWith(shortUrl);
+    expect(mockResponse.redirect).toHaveBeenCalledWith(originalUrl);
   });
 });
