@@ -28,7 +28,7 @@
 - ✔️ Testes unitários, integração e e2e.
 - ✔️ Documentação feita no swagger.
 - ✔️ Ter validação de entrada em todos os lugares necessários.
-- ✔️ Implementado sistema de cache para o acesso das URLs curtas, otimizando a recuperação da URL original. No primeiro acesso, a URL original é consultada diretamente no banco de dados, enquanto os acessos subsequentes utilizam o cache, reduzindo a carga sobre o banco e melhorando a performance. Em casos de atualização ou exclusão de uma URL, o cache é automaticamente invalidado para garantir a consistência dos dados.
+- ✔️ Implementado sistema de cache para o acesso das URLs curtas. No primeiro acesso, a URL original é consultada diretamente no banco de dados, enquanto os acessos subsequentes utilizam o cache, reduzindo a carga sobre o banco e melhorando a performance. Em casos de atualização ou exclusão de uma URL, o cache é automaticamente invalidado para garantir a consistência dos dados.
 
 ### Instalando as dependências:
 ```bash
@@ -38,6 +38,11 @@ $ npm i ou npm install
 ### Variáveis de ambiente:
 - Crie uma cópia do arquivo .env.example e renomeie para apenas .env.
 - Preenchas as informações corretamente.
+
+### Migrations do banco de dados:
+```bash
+$ npm run db:migration
+```
 
 ### Rodando a aplicação:
 ```bash
