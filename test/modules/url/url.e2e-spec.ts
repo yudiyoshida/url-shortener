@@ -1,10 +1,12 @@
 import * as request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { RegisterUseCase } from 'src/modules/account/application/usecases/register/register.service';
+import { LoginUseCase } from 'src/modules/authentication/application/usecases/login/login.service';
 import { CreateUrlInputDto } from 'src/modules/url/application/usecases/create-url/dto/create-url.dto';
-import { AppModule } from '../src/app.module';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
+import { AppModule } from '../../../src/app.module';
 
 const data: CreateUrlInputDto = {
   originalUrl: 'https://teddydigital.io',
@@ -16,7 +18,9 @@ const data: CreateUrlInputDto = {
  */
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let jwtService: JwtService;
+  let register: RegisterUseCase;
+  let login: LoginUseCase;
+  let database: PrismaService;
 
   let token: string;
 
@@ -28,8 +32,26 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    jwtService = moduleFixture.get<JwtService>(JwtService);
-    token = jwtService.sign({ sub: '123' });
+    login = moduleFixture.get<LoginUseCase>(LoginUseCase);
+    register = moduleFixture.get<RegisterUseCase>(RegisterUseCase);
+    database = moduleFixture.get<PrismaService>(PrismaService);
+  });
+
+  beforeEach(async() => {
+    await database.account.deleteMany();
+    await database.url.deleteMany();
+
+    const data = {
+      email: 'jhondoe@gmail.com',
+      password: 'abc123456',
+    };
+
+    await register.execute({
+      ...data,
+      name: 'Jhon Doe',
+    });
+
+    token = (await login.execute(data)).token;
   });
 
   describe('List all urls GET /', () => {
