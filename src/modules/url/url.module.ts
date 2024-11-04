@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AppCacheModule } from 'src/core/app-cache.module';
 import { AppConfigModule } from 'src/core/app-config.module';
 import { PrismaModule } from 'src/shared/infra/database/prisma.module';
 import { TOKENS } from 'src/shared/ioc/tokens';
@@ -17,6 +18,7 @@ import { UrlPrismaAdapterDao } from './infra/persistence/dao/prisma/url-prisma.d
   imports: [
     AppConfigModule,
     AuthenticationModule,
+    AppCacheModule,
     PrismaModule,
   ],
   controllers: [
