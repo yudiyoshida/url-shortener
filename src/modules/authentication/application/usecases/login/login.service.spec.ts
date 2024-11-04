@@ -51,7 +51,6 @@ describe('LoginService', () => {
     // Act & Assert
     expect.assertions(2);
     return sut.execute(data).catch(error => {
-      console.log(error);
       expect(error).toBeInstanceOf(BadRequestException);
       expect(error.message).toBe(Errors.INVALID_CREDENTIALS);
     });
