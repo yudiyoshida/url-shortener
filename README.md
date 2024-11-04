@@ -21,6 +21,7 @@
 - ✔️ Os registros só poderão ser deletados logicamente do banco, ou seja, deverá ter um campo que guarda a data de exclusão do registro, caso ela esteja nula é porque ele é válido, caso esteja preenchida é porque ele foi excluído e nenhuma operação de leitura ou escrita pode ser realizada por ele.
 - ✔️ Construir endpoints para autenticação de e-mail e senha que retorna um Bearer Token.
 - ✔️ Definir o que deve e não deve ser variável de ambiente.
+- ✔️ API REST com nível 2 de maturidade de Leonard Richardson.
 
 ### Diferenciais:
 - ✔️ Docker compose.
