@@ -2,72 +2,69 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Informações técnicas:
+- node: 22.11.0
+- npm: 10.9.0
+- postgres: 14.5
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descrição
+- Este projeto tem como objetivo criar um sistema eficiente de encurtamento de URLs. Com ele, URLs longas e complexas são transformadas em links curtos, simplificando o compartilhamento e a visualização. Além de facilitar o acesso, o sistema registra cada clique em links encurtados, permitindo monitoramento e análise de uso.
 
-## Description
+### Requisitos cumpridos:
+- ✔️ O sistema deve possibilitar o cadastro de usuários e autenticação dos mesmos.
+- ✔️ O sistema deve possibilitar que a partir de um url enviado, ele seja encurtado para no máximo 6 caracteres.
+- ✔️ Qualquer um pode solicitar que o URL seja encurtado e para encurtar deve existir apenas um endpoint, mas caso seja um usuário autenticado, o sistema deve registrar que o URL pertence ao usuário. Deve retornar o url encurtado - incluindo o domínio.
+- ✔️ Um usuário autenticado pode listar, editar o endereço de destino e excluir URLs encurtadas por ele.
+- ✔️ Todo acesso a qualquer URL encurtado deve ser contabilizado no sistema.
+- ✔️ Quando um usuário listar os urls deve aparecer na listagem a quantidade de cliques.
+- ✔️ Todos os registros devem ter uma forma de saber quando foram atualizados.
+- ✔️ Os registros só poderão ser deletados logicamente do banco, ou seja, deverá ter um campo que guarda a data de exclusão do registro, caso ela esteja nula é porque ele é válido, caso esteja preenchida é porque ele foi excluído e nenhuma operação de leitura ou escrita pode ser realizada por ele.
+- ✔️ Construir endpoints para autenticação de e-mail e senha que retorna um Bearer Token.
+- ✔️ Definir o que deve e não deve ser variável de ambiente.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Diferenciais:
+- ✔️ Docker compose.
+- ✔️ Testes unitários, integração e e2e.
+- ✔️ Documentação feita no swagger.
+- ✔️ Ter validação de entrada em todos os lugares necessários.
+- ✔️ Implementado sistema de cache para o acesso das URLs curtas, otimizando a recuperação da URL original. No primeiro acesso, a URL original é consultada diretamente no banco de dados, enquanto os acessos subsequentes utilizam o cache, reduzindo a carga sobre o banco e melhorando a performance. Em casos de atualização ou exclusão de uma URL, o cache é automaticamente invalidado para garantir a consistência dos dados.
 
-## Installation
-
+### Instalando as dependências:
 ```bash
-$ npm install
+$ npm i ou npm install
 ```
 
-## Running the app
+### Variáveis de ambiente:
+- Crie uma cópia do arquivo .env.example e renomeie para apenas .env.
+- Preenchas as informações corretamente.
 
+### Rodando a aplicação:
 ```bash
 # development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
 
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+### Rodando a aplicação com Docker compose:
+```bash
+$ docker compose up --build -d
+```
 
+### Testes:
 ```bash
 # unit tests
 $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
+### Documentação:
+```bash
+http://localhost:port/swagger
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+### Melhorias:
+- Utilizar redis no endpoint que acessa a url curta e redireciona para a url original. Dessa forma, todos os microserviços (se houver uma migração) terão acesso ao cache.
