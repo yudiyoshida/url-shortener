@@ -30,6 +30,12 @@
 - ✔️ Ter validação de entrada em todos os lugares necessários.
 - ✔️ Implementado sistema de cache para o acesso das URLs curtas. No primeiro acesso, a URL original é consultada diretamente no banco de dados, enquanto os acessos subsequentes utilizam o cache, reduzindo a carga sobre o banco e melhorando a performance. Em casos de atualização ou exclusão de uma URL, o cache é automaticamente invalidado para garantir a consistência dos dados.
 
+### Rodando a aplicação com Docker compose:
+```bash
+$ docker compose up --build -d
+```
+- Caso for subir o projeto na própria máquina, siga os passos abaixo:
+
 ### Instalando as dependências:
 ```bash
 $ npm i ou npm install
@@ -44,20 +50,6 @@ $ npm i ou npm install
 $ npm run db:migration
 ```
 
-### Rodando a aplicação:
-```bash
-# development
-$ npm run start
-
-# production mode
-$ npm run start:prod
-```
-
-### Rodando a aplicação com Docker compose:
-```bash
-$ docker compose up --build -d
-```
-
 ### Testes:
 ```bash
 # unit tests
@@ -65,6 +57,15 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
+```
+
+### Rodando a aplicação:
+```bash
+# development
+$ npm run start
+
+# production mode
+$ npm run start:prod
 ```
 
 ### Documentação:
